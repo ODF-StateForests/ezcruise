@@ -49,6 +49,8 @@ const addUnit = async () => {
         </div>
       </div>
     </div>
-    <button @click="addUnit">+ New Unit</button>
+    <div class="flex justify-center mt-4">
+      <button class="!text-xl px-8 py-4 text-red-500" @click="addUnit">+ New Unit</button>
+    </div>
   </div>
 </template>

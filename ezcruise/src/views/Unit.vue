@@ -73,7 +73,8 @@
 
       const handleEdit = (): void => {
           currentUnit.polygon = drawnItems.toGeoJSON();
-          currentUnit.gross_area = (turf.area(currentUnit.polygon)/4046.86);
+          currentUnit.gross_area = Math.round((turf.area(currentUnit.polygon)/4046.86)*100)/100;
+          currentUnit.net_area = currentUnit.gross_area; // This can be adjusted later if we add holes or exclusions
           currentUnit.polygon_edited_timestamp = Date.now();
           currentUnit.polygon_edited_by = "user"; // Placeholder for user identification
           save();
@@ -116,6 +117,15 @@
           removalMode: true,
           rotateMode: false,
           drawPolygon: drawnItems.getLayers().length === 0
+      });
+      
+      map.on('pm.drawstart', () => {
+        map.getContainer().style.cursor = 'crosshair';
+      });
+      
+      map.on('pm:drawend', () => {
+        // Reset cursor when drawing ends
+        map.getContainer().style.cursor = '';
       });
 
       map.on('pm:create', (e: any) => {
@@ -272,7 +282,7 @@
         </div>
         <div class="floating-label">
           <input
-            :value="unit.gross_area != null ? unit.gross_area.toFixed(2) : '0.00'"
+            :value="unit.gross_area != null ? unit.gross_area : '0.00'"
             placeholder="0.00"
             type="text"
             pattern="\d{1,3}.\d{1,2}"

@@ -1,5 +1,4 @@
-export default {
-  plugins: {
-    '@tailwindcss/postcss': {},
-  },
-}
+import 'ts-node/register'
+import config from './postcss.config.ts'
+
+export default config
